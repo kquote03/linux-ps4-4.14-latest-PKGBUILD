@@ -10,4 +10,5 @@ If /mnt was my fat32 partition, then
 =# cp /boot/vmlinuz-linux-git /mnt/bzImage=
 
 ** TODO
+*TODO*
 - Make a script that generates an sha sum and inserts it into the PKGBUILD so =--skipinteg= is no longer needed (and for security :P)
