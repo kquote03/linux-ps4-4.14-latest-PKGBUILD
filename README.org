@@ -2,4 +2,4 @@
 Title explains all
 
 ** Installing
-clone this repo and run src_sh{makepkg --skipinteg}
+clone this repo and run =makepkg --skipinteg=
