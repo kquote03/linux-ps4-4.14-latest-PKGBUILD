@@ -3,7 +3,7 @@
 # Contributor: Jan Alexander Steffens (heftig) <jan.steffens@gmail.com>
 
 pkgbase=linux-git
-pkgver=5.10rc2.r81.g4ef8451b3326
+pkgver=23c0c5bec0d7bea9a36b11ef18a7e0fd15eab646
 pkgrel=1
 pkgdesc='Linux (Git)'
 url="https://www.kernel.org"
@@ -14,9 +14,9 @@ makedepends=(
   xmlto python-sphinx python-sphinx_rtd_theme graphviz imagemagick
 )
 options=('!strip')
-_srcname=linux
+_srcname=linux-ps4-4.14-latest
 source=(
-  'git+https://kernel.googlesource.com/pub/scm/linux/kernel/git/torvalds/linux'
+  'git+https://github.com/kquote03/linux-ps4-4.14-latest'
   config         # the main kernel config file
 )
 sha256sums=('SKIP'
@@ -29,7 +29,7 @@ export KBUILD_BUILD_TIMESTAMP="$(date -Ru${SOURCE_DATE_EPOCH:+d @$SOURCE_DATE_EP
 pkgver() {
   cd $_srcname
 
-  git describe --long | sed -E 's/^v//;s/([^-]*-g)/r\1/;s/-/./g;s/\.rc/rc/'
+  git rev-parse FETCH_HEAD | sed -E 's/^v//;s/([^-]*-g)/r\1/;s/-/./g;s/\.rc/rc/'
 }
 
 prepare() {
@@ -60,7 +60,7 @@ prepare() {
 build() {
   cd $_srcname
   make all
-  make htmldocs
+  #make htmldocs
 }
 
 _package() {
@@ -168,27 +168,27 @@ _package-headers() {
   ln -sr "$builddir" "$pkgdir/usr/src/$pkgbase"
 }
 
-_package-docs() {
-  pkgdesc="Documentation for the $pkgdesc kernel"
+#_package-docs() {
+#  pkgdesc="Documentation for the $pkgdesc kernel"
+#
+#  cd $_srcname
+#  local builddir="$pkgdir/usr/lib/modules/$(<version)/build"
+#
+#  echo "Installing documentation..."
+#  local src dst
+#  while read -rd '' src; do
+#    dst="${src#Documentation/}"
+#    dst="$builddir/Documentation/${dst#output/}"
+#    install -Dm644 "$src" "$dst"
+#  done < <(find Documentation -name '.*' -prune -o ! -type d -print0)
+#
+#  echo "Adding symlink..."
+#  mkdir -p "$pkgdir/usr/share/doc"
+#  ln -sr "$builddir/Documentation" "$pkgdir/usr/share/doc/$pkgbase"
+#}
 
-  cd $_srcname
-  local builddir="$pkgdir/usr/lib/modules/$(<version)/build"
 
-  echo "Installing documentation..."
-  local src dst
-  while read -rd '' src; do
-    dst="${src#Documentation/}"
-    dst="$builddir/Documentation/${dst#output/}"
-    install -Dm644 "$src" "$dst"
-  done < <(find Documentation -name '.*' -prune -o ! -type d -print0)
-
-  echo "Adding symlink..."
-  mkdir -p "$pkgdir/usr/share/doc"
-  ln -sr "$builddir/Documentation" "$pkgdir/usr/share/doc/$pkgbase"
-}
-
-
-pkgname=("$pkgbase" "$pkgbase-headers" "$pkgbase-docs")
+pkgname=("$pkgbase" "$pkgbase-headers") #"$pkgbase-docs")
 for _p in "${pkgname[@]}"; do
   eval "package_$_p() {
     $(declare -f "_package${_p#$pkgbase}")
