@@ -1,5 +1,5 @@
-* PKGBUILDS of PS4 4.14-latest
-Title explains all
+* PKGBUILDs of PS4 4.14-latest
+Title explains all. Also installs linux-git-headers, DKMS should work, I tested it with v4l2loopbak-dkms and it worked. Based on vanilla linux-git PKGBUILD from the AUR.
 
 ** Installing
 clone this repo and run =makepkg --skipinteg -si=
