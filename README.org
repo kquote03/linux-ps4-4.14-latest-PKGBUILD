@@ -1,0 +1,5 @@
+* PKGBUILDS of PS4 4.14-latest
+Title explains all
+
+** Installing
+clone this repo and run src_bash{makepkg --skipinteg}
